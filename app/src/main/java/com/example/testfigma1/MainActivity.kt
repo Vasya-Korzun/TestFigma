@@ -32,9 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -95,8 +98,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-data class Order(val colorElement: Color)
-
 @Composable
 fun Screen(
     innerPadding: PaddingValues,
@@ -129,7 +130,7 @@ fun Screen(
         }
         itemsIndexed(viewState.fullListDishes) { index, dish ->
             TheDishesInYourOrder(
-                modifierColor = dish.colorElement,
+                order = dish,
                 onClick = { dispatch(MainIntent.Add(index)) }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -158,7 +159,7 @@ fun Screen(
         }
         itemsIndexed(viewState.selectedDishes) { index, dish ->
             SelectDishes(
-                modifierColor = dish.colorElement,
+                order = dish,
                 onClick = { dispatch(MainIntent.Remove(index)) }
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -178,11 +179,8 @@ fun Screen(
 }
 
 
-//@Composable
-//fun SelectElement(viewState: MainState, dispatch: (MainIntent) -> Unit) { //TODO изменить
-
 @Composable
-fun SelectElement(selection: Selection, onClick: (s: Selection) -> Unit) { //TODO изменить
+fun SelectElement(selection: Selection, onClick: (section: Selection) -> Unit) {
 
     Row(
         modifier = Modifier
@@ -199,7 +197,6 @@ fun SelectElement(selection: Selection, onClick: (s: Selection) -> Unit) { //TOD
                 )
                 .weight(0.5f)
                 .fillMaxHeight()
-//                .clickable { dispatch(MainIntent.ChangeSelectSection(Selection.Calories)) },
                 .clickable { onClick(Selection.Calories) },
             contentAlignment = Alignment.Center
         ) {
@@ -215,19 +212,18 @@ fun SelectElement(selection: Selection, onClick: (s: Selection) -> Unit) { //TOD
         Box(
             modifier = Modifier
                 .background(
-                    color = if (selection == Selection.Tip) Gray else Color.Transparent,
+                    color = if (selection == Selection.Tips) Gray else Color.Transparent,
                     shape = RoundedCornerShape(12.dp)
                 )
                 .weight(0.5f)
                 .fillMaxHeight()
-//                .clickable { dispatch(MainIntent.ChangeSelectSection(Selection.Tip)) },
-                .clickable { onClick(Selection.Tip) },
+                .clickable { onClick(Selection.Tips) },
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "Tips",
                 style = TextStyle(
-                    color = if (selection == Selection.Tip) White else Gray,
+                    color = if (selection == Selection.Tips) White else Gray,
                     fontSize = 10.sp,
                     fontWeight = FontWeight(600)
                 ),
@@ -240,7 +236,7 @@ fun SelectElement(selection: Selection, onClick: (s: Selection) -> Unit) { //TOD
 
 @Composable
 fun TheDishesInYourOrder(
-    modifierColor: Color,
+    order: Order,
     onClick: () -> Unit
 ) {
 
@@ -259,7 +255,7 @@ fun TheDishesInYourOrder(
             Column {
 
                 Text(
-                    text = "Header", style = TextStyle(
+                    text = order.header, style = TextStyle(
                         color = White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight(600)
@@ -269,7 +265,7 @@ fun TheDishesInYourOrder(
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = "XXX g - XXX serving", style = TextStyle(
+                    text = order.serving.toString(), style = TextStyle(
                         color = GrayText,
                         fontSize = 12.sp,
                         fontWeight = FontWeight(400)
@@ -282,7 +278,7 @@ fun TheDishesInYourOrder(
             Column(modifier = Modifier.height(50.dp)) {
 
                 Text(
-                    text = "Nutritional value",
+                    text = order.nutritionalValue,
                     style = TextStyle(
                         color = White,
                         fontSize = 14.sp,
@@ -297,7 +293,11 @@ fun TheDishesInYourOrder(
                     Box(
                         modifier = Modifier
                             .background(
-                                color = modifierColor,
+                                color = when {
+                                    order.nutritionalValueItems.kcal < 1300.0 -> Blue
+                                    order.nutritionalValueItems.kcal >= 1300.0 && order.nutritionalValueItems.kcal < 1500.0 -> Yellow
+                                    else -> Red
+                                },
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .height(24.dp)
@@ -306,7 +306,7 @@ fun TheDishesInYourOrder(
 
                     ) {
                         Text(
-                            text = "XXX ccal",
+                            text = order.nutritionalValueItems.kcal.toString(),
                             style = TextStyle(
                                 color = GrayText,
                                 fontSize = 12.sp,
@@ -329,7 +329,7 @@ fun TheDishesInYourOrder(
 
                     ) {
                         Text(
-                            text = "P:XX g",
+                            text = order.nutritionalValueItems.p.toString(),
                             style = TextStyle(
                                 color = GrayText,
                                 fontSize = 12.sp,
@@ -352,7 +352,7 @@ fun TheDishesInYourOrder(
 
                     ) {
                         Text(
-                            text = "F:XX g",
+                            text = order.nutritionalValueItems.f.toString(),
                             style = TextStyle(
                                 color = GrayText,
                                 fontSize = 12.sp,
@@ -374,7 +374,7 @@ fun TheDishesInYourOrder(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "C:XX g",
+                            text = order.nutritionalValueItems.c.toString(),
                             style = TextStyle(
                                 color = GrayText,
                                 fontSize = 12.sp,
@@ -405,7 +405,7 @@ fun TheDishesInYourOrder(
 
 @Composable
 fun SelectDishes(
-    modifierColor: Color,
+    order: Order,
     onClick: () -> Unit
 ) {
     Box {
@@ -423,7 +423,7 @@ fun SelectDishes(
             Row(
                 modifier = Modifier
                     .height(24.dp)
-                    .width(104.dp)
+                    .width(124.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -447,7 +447,7 @@ fun SelectDishes(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Header", style = TextStyle(
+                        text = order.header, style = TextStyle(
                             color = White,
                             fontSize = 14.sp,
                             fontWeight = FontWeight(600),
@@ -472,7 +472,7 @@ fun SelectDishes(
 
                 ) {
                     Text(
-                        text = "P:XX g",
+                        text = order.nutritionalValueItems.p.toString(),
                         style = TextStyle(
                             color = GrayText,
                             fontSize = 12.sp,
@@ -495,7 +495,7 @@ fun SelectDishes(
 
                 ) {
                     Text(
-                        text = "F:XX g",
+                        text = order.nutritionalValueItems.f.toString(),
                         style = TextStyle(
                             color = GrayText,
                             fontSize = 12.sp,
@@ -517,7 +517,7 @@ fun SelectDishes(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "C:XX g",
+                        text = order.nutritionalValueItems.c.toString(),
                         style = TextStyle(
                             color = GrayText,
                             fontSize = 12.sp,
@@ -531,7 +531,7 @@ fun SelectDishes(
                 Box(
                     modifier = Modifier
                         .background(
-                            color = modifierColor,
+                            color = order.colorElement,
                             shape = RoundedCornerShape(4.dp)
                         )
                         .height(24.dp)
@@ -540,7 +540,7 @@ fun SelectDishes(
 
                 ) {
                     Text(
-                        text = "XXX ccal",
+                        text = order.nutritionalValueItems.kcal.toString(),
                         style = TextStyle(
                             color = GrayText,
                             fontSize = 12.sp,
@@ -553,7 +553,6 @@ fun SelectDishes(
 
 
         }
-
 
         Image(
             painter = painterResource(R.drawable.icon_remove),
