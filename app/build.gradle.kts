@@ -50,7 +50,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+
     implementation(libs.androidx.viewmodel)
+    implementation(libs.androidx.navigationFragment)
+    implementation(libs.androidx.navigationUI)
+    implementation(libs.androidx.appcompat)
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

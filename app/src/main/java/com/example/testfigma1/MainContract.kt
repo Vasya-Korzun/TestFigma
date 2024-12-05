@@ -27,7 +27,8 @@ data class MainState(
                     Blue,
                     NutritionalValueElement(
                         1200.0, 400.0, 250.0, 500.0
-                    )
+                    ),
+                    200.25
                 ),
                 Order(
                     "Lasagna",
@@ -36,7 +37,8 @@ data class MainState(
                     Yellow,
                     NutritionalValueElement(
                         1400.0, 450.0, 350.0, 580.0
-                    )
+                    ),
+                    535.32
                 ),
                 Order(
                     "Dessert",
@@ -45,7 +47,8 @@ data class MainState(
                     Red,
                     NutritionalValueElement(
                         1700.0, 120.0, 200.0, 180.0
-                    )
+                    ),
+                    120.12
                 )
             ),
 
@@ -81,7 +84,6 @@ sealed interface PartialStateChange {
 
     data class ChangeSelectSection(val select: Selection) : PartialStateChange {
         override fun reduce(viewState: MainState): MainState {
-            println("CHANGE ${select.name}")
             return viewState.copy(
                 selectedSection = select
             )
@@ -117,7 +119,8 @@ data class Order(
     val serving: Double,
     val nutritionalValue: String,
     val colorElement: Color,
-    val nutritionalValueItems: NutritionalValueElement
+    val nutritionalValueItems: NutritionalValueElement,
+    val price: Double
 )
 
 
