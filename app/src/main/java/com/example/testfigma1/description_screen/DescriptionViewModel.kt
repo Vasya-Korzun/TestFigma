@@ -1,4 +1,4 @@
-package com.example.testfigma1
+package com.example.testfigma1.description_screen
 
 import androidx.lifecycle.viewModelScope
 import com.example.testfigma1.base.AbstractMviViewModel
@@ -12,11 +12,12 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 
-class MainViewModel : AbstractMviViewModel<MainIntent, MainState, MainEvent>() {
-    override val viewState: StateFlow<MainState>
+class DescriptionViewModel :
+    AbstractMviViewModel<DescriptionIntent, DescriptionState, DescriptionEvent>() {
+    override val viewState: StateFlow<DescriptionState>
 
     init {
-        val initialVS = MainState.initial()
+        val initialVS = DescriptionState.initial()
         viewState = intentSharedFlow
             .shareWhileSubscribed()
             .toPartialStateChangeFlow()
@@ -28,24 +29,15 @@ class MainViewModel : AbstractMviViewModel<MainIntent, MainState, MainEvent>() {
             )
     }
 
-    private fun SharedFlow<MainIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
+    private fun SharedFlow<DescriptionIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
 
-        val initialFlow = filterIsInstance<MainIntent.Add>().map { intent ->
-            PartialStateChange.Add(intent.index)
+        val initialFlow = filterIsInstance<DescriptionIntent.Insert>().map { intent ->
+            PartialStateChange.Insert(intent.index)
         }.shareWhileSubscribed()
 
-        val inputFlow = filterIsInstance<MainIntent.Remove>().map { intent ->
-            PartialStateChange.Remove(intent.index)
-        }.shareWhileSubscribed()
-
-        val selectFlow = filterIsInstance<MainIntent.ChangeSelectSection>().map { intent ->
-            PartialStateChange.ChangeSelectSection(intent.select)
-        }.shareWhileSubscribed()
 
         return merge(
             initialFlow,
-            inputFlow,
-            selectFlow
         )
     }
 

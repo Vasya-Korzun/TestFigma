@@ -1,4 +1,4 @@
-package com.example.testfigma1
+package com.example.testfigma1.main_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.testfigma1.R
 import com.example.testfigma1.ui.theme.GrayText
 import com.example.testfigma1.ui.theme.GreenBackground
 import kotlinx.coroutines.Dispatchers
@@ -302,7 +303,7 @@ fun TheDishesInYourOrder(
                 .fillMaxWidth()
                 .height(134.dp)
                 .padding(16.dp)
-                .clickable { }                     //TODO Go to fragment SecondFragment
+                .clickable {  }                     //TODO Go to fragment DescriptionFragment!!!!!!!!
         ) {
 
             Column {

@@ -1,4 +1,4 @@
-package com.example.testfigma1
+package com.example.testfigma1.main_screen
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
@@ -28,7 +28,8 @@ data class MainState(
                     NutritionalValueElement(
                         1200.0, 400.0, 250.0, 500.0
                     ),
-                    200.25
+                    200.25,
+                    ""
                 ),
                 Order(
                     "Lasagna",
@@ -38,7 +39,8 @@ data class MainState(
                     NutritionalValueElement(
                         1400.0, 450.0, 350.0, 580.0
                     ),
-                    535.32
+                    535.32,
+                    ""
                 ),
                 Order(
                     "Dessert",
@@ -48,7 +50,8 @@ data class MainState(
                     NutritionalValueElement(
                         1700.0, 120.0, 200.0, 180.0
                     ),
-                    120.12
+                    120.12,
+                    ""
                 )
             ),
 
@@ -120,7 +123,8 @@ data class Order(
     val nutritionalValue: String,
     val colorElement: Color,
     val nutritionalValueItems: NutritionalValueElement,
-    val price: Double
+    val price: Double,
+    val description:String
 )
 
 
