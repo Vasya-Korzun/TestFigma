@@ -29,6 +29,10 @@ class DescriptionViewModel :
             )
     }
 
+//    fun onHandleIntent() {
+//
+//    }
+
     private fun SharedFlow<DescriptionIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
 
         val initialFlow = filterIsInstance<DescriptionIntent.Insert>().map { intent ->

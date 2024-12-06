@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color.Companion.Yellow
 import com.example.testfigma1.base.MviIntent
 import com.example.testfigma1.base.MviSingleEvent
 import com.example.testfigma1.base.MviViewState
+import java.io.Serializable
 
 
 data class MainState(
@@ -29,7 +30,7 @@ data class MainState(
                         1200.0, 400.0, 250.0, 500.0
                     ),
                     200.25,
-                    ""
+                    "Soup item selected"
                 ),
                 Order(
                     "Lasagna",
@@ -40,7 +41,7 @@ data class MainState(
                         1400.0, 450.0, 350.0, 580.0
                     ),
                     535.32,
-                    ""
+                    "Lasagna item selected"
                 ),
                 Order(
                     "Dessert",
@@ -51,7 +52,7 @@ data class MainState(
                         1700.0, 120.0, 200.0, 180.0
                     ),
                     120.12,
-                    ""
+                    "Dessert item selected"
                 )
             ),
 
@@ -124,8 +125,8 @@ data class Order(
     val colorElement: Color,
     val nutritionalValueItems: NutritionalValueElement,
     val price: Double,
-    val description:String
-)
+    val description: String
+) : Serializable
 
 
 

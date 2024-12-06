@@ -9,7 +9,7 @@
         android:id="@+id/mainFragment"
         android:name="com.example.testfigma1.main_screen.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_descriptionFragment"
             app:destination="@id/descriptionFragment" />
@@ -18,5 +18,9 @@
         android:id="@+id/descriptionFragment"
         android:name="com.example.testfigma1.description_screen.DescriptionFragment"
         android:label="fragment_description"
-        tools:layout="@layout/fragment_description" />
+        tools:layout="@layout/fragment_description">
+        <argument
+            android:name="dishDescription"
+            app:argType="com.example.testfigma1.main_screen.Order" />
+    </fragment>
 </navigation>
